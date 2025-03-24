@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const menuItems = [
   { name: 'Home', path: '/' },
+  { name: 'Registration Fees', path: '/registration-fees' },
   { name: 'Call for abstract', path: '/call-for-abstract' },
   { name: 'Papers', path: '/papers' },
   { name: 'Guide for authors', path: '/guide' },
