@@ -7,7 +7,8 @@ const menuItems = [
   { name: 'Papers', path: '/papers' },
   { name: 'Guide for authors', path: '/guide' },
   { name: 'EasyChair', path: '/easychair' },
-  { name: 'Submit Abstract', path: '/submit-abstract' }
+  { name: 'Submit Abstract', path: '/submit-abstract' },
+  { name: 'Grand Cantalagua', path: '/grand-cantalagua' }
 ]
 </script>
 

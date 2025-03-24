@@ -28,11 +28,16 @@ const routes = [
     path: '/submit-abstract',
     name: 'SubmitAbstract',
     component: () => import('../views/SubmitAbstract.vue')
+  },
+  {
+    path: '/grand-cantalagua',
+    name: 'grandCantalagua',
+    component: () => import('../views/GrandCantalagua.vue')
   }
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes
 })
 
