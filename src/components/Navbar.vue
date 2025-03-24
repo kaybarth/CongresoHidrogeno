@@ -13,7 +13,7 @@ const menuItems = [
     <div class="container mx-auto px-4">
       <div class="flex justify-between items-center h-16">
         <div class="flex items-center">
-          <img src="/vite.svg" alt="Logo" class="h-8 w-8 mr-2" />
+            <img src="/logo1.png" alt="Logo" class="h-8 w-auto max-h-full mr-2" />
           <span class="text-xl font-semibold">XXV</span>
         </div>
         <div class="hidden md:flex space-x-8">
