@@ -3,9 +3,9 @@ import { ref } from 'vue';
 
 // Example images for the slider - replace with actual hotel images later
 const images = ref([
-  { src: '/Hotel1.jpg', alt: 'Grand Cantalagua Hotel 1' },
-  { src: '/Hotel2.jpg', alt: 'Grand Cantalagua Hotel 2' },
-  { src: '/Hotel3.jpg', alt: 'Grand Cantalagua Hotel 3' },
+  { src: import.meta.env.BASE_URL + '/Hotel1.jpg', alt: 'Grand Cantalagua Hotel 1' },
+  { src: import.meta.env.BASE_URL + '/Hotel2.jpg', alt: 'Grand Cantalagua Hotel 2' },
+  { src: import.meta.env.BASE_URL + '/Hotel3.jpg', alt: 'Grand Cantalagua Hotel 3' },
 ]);
 
 const currentImageIndex = ref(0);
