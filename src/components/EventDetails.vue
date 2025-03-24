@@ -8,7 +8,7 @@ const eventDetails = {
 </script>
 
 <template>
-  <div class="bg-blue-700 text-white p-8 rounded-lg text-center my-8">
+  <div class="bg-blue-700 text-white p-8 rounded-lg text-center my-8" style="background-color: rgba(2, 60, 102, 0.7);">
     <h2 class="text-3xl font-bold mb-4">{{ eventDetails.name }}</h2>
     <p class="text-xl mb-2">{{ eventDetails.dates }}</p>
     <p class="text-xl mb-4">{{ eventDetails.location }}</p>

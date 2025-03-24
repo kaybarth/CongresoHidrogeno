@@ -14,4 +14,8 @@ import Home from './pages/Home.vue'
 .container {
   max-width: 1200px;
 }
+
+body {
+  color: rgba(2, 60, 102, 0.7); /* #023C66 with 70% opacity */
+}
 </style>
