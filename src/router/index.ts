@@ -33,6 +33,11 @@ const routes = [
     path: '/grand-cantalagua',
     name: 'grandCantalagua',
     component: () => import('../views/GrandCantalagua.vue')
+  },
+  {
+    path: '/in-honor',
+    name: 'InHonor',
+    component: () => import('../views/InHonorView.vue')
   }
 ]
 

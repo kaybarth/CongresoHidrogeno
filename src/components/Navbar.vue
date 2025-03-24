@@ -28,7 +28,8 @@ const menuItems = [
   { 
     name: 'Program', 
     children: [
-      { name: 'Plenary Speakers', path: '/plenary-speakers' }
+      { name: 'Plenary Speakers', path: '/plenary-speakers' },
+      { name: 'In Honor', path: '/in-honor' }
     ] 
   }
 ];
