@@ -3,30 +3,45 @@ import Header from '../components/Header.vue'
 
 const registrationFees = [
   {
-    category: 'Early Bird',
-    dates: 'Until June 30, 2025',
+    category: 'Before June 23, 2025',
     fees: [
-      { type: 'Academic/Professional', price: '$350 USD' },
-      { type: 'Student', price: '$200 USD' },
-      { type: 'Virtual Attendance', price: '$150 USD' }
+      {
+        type: 'Active Members',
+        prices: [
+          { attendee: 'Students', price: '$2,800' },
+          { attendee: 'Professionals', price: '$5,400' },
+          { attendee: 'Industries', price: '$7,200' }
+        ]
+      },
+      {
+        type: 'Non-Members',
+        prices: [
+          { attendee: 'Students', price: '$3,000' },
+          { attendee: 'Professionals', price: '$6,000' },
+          { attendee: 'Industries', price: '$8,000' }
+        ]
+      }
     ]
   },
   {
-    category: 'Regular Registration',
-    dates: 'July 1 - August 31, 2025',
+    category: 'After June 23, 2025',
     fees: [
-      { type: 'Academic/Professional', price: '$450 USD' },
-      { type: 'Student', price: '$250 USD' },
-      { type: 'Virtual Attendance', price: '$200 USD' }
-    ]
-  },
-  {
-    category: 'Late Registration',
-    dates: 'September 1 - September 15, 2025',
-    fees: [
-      { type: 'Academic/Professional', price: '$550 USD' },
-      { type: 'Student', price: '$300 USD' },
-      { type: 'Virtual Attendance', price: '$250 USD' }
+      {
+        type: 'Active Members',
+        prices: [
+          { attendee: 'Students', price: '$3,300' },
+          { attendee: 'Professionals', price: '$6,300' },
+          { attendee: 'Industries', price: '$8,300' }
+        ]
+      },
+      {
+        type: 'Non-Members',
+        prices: [
+          { attendee: 'Students', price: '$3,500' },
+          { attendee: 'Professionals', price: '$7,000' },
+          { attendee: 'Industries', price: '$9,200' }
+        ]
+      }
     ]
   }
 ]
@@ -60,20 +75,32 @@ const paymentMethods = [
     />
     
     <div class="my-8">
-      <div class="grid md:grid-cols-3 gap-6">
+      <div class="grid md:grid-cols-2 gap-6">
         <div v-for="(category, index) in registrationFees" :key="index" 
             class="p-6 rounded-lg shadow-md" 
             :class="{'bg-blue-50': index === 0, 'bg-white': index !== 0}">
-          <h3 class="text-2xl font-bold mb-2">{{ category.category }}</h3>
-          <p class="text-lg mb-4 font-medium">{{ category.dates }}</p>
-          <ul class="space-y-2">
-            <li v-for="(fee, feeIndex) in category.fees" :key="feeIndex" class="flex justify-between">
-              <span>{{ fee.type }}</span>
-              <span class="font-bold">{{ fee.price }}</span>
-            </li>
-          </ul>
+          <h3 class="text-2xl font-bold mb-4">{{ category.category }}</h3>
+          
+          <div v-for="(feeType, typeIndex) in category.fees" :key="typeIndex" class="mb-6">
+            <h4 class="text-xl font-semibold mb-2">{{ feeType.type }}</h4>
+            <table class="w-full">
+              <thead>
+                <tr class="border-b">
+                  <th class="text-left pb-2">Attendee Type</th>
+                  <th class="text-right pb-2">Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(price, priceIndex) in feeType.prices" :key="priceIndex" class="border-b">
+                  <td class="py-2">{{ price.attendee }}</td>
+                  <td class="py-2 text-right font-bold">{{ price.price }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
+      <p class="text-sm mt-4 italic">* Prices in Mexican pesos</p>
     </div>
     
     <div class="my-12">
@@ -103,7 +130,14 @@ const paymentMethods = [
         <li>Complete payment within 7 days to secure your registration</li>
         <li>Receive official confirmation and receipt</li>
       </ol>
-      <p class="mt-4 font-medium">For any questions regarding registration, please contact: <a href="mailto:registration@hydrogencongressxxv.org" class="text-blue-600 hover:underline">registration@hydrogencongressxxv.org</a></p>
+      <div class="mt-6">
+        <h3 class="text-xl font-bold mb-2">Register Now</h3>
+        <p class="mb-2">Write to us at the following emails:</p>
+        <p>
+          <a href="mailto:contacto@smhidrogeno.net" class="text-blue-600 hover:underline">contacto@smhidrogeno.net</a> or 
+          <a href="mailto:xxv.smhcongress@morelia.tecnm.mx" class="text-blue-600 hover:underline">xxv.smhcongress@morelia.tecnm.mx</a>
+        </p>
+      </div>
     </div>
   </div>
 </template>
