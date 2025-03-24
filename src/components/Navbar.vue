@@ -17,14 +17,14 @@ const menuItems = [
           <span class="text-xl font-semibold">XXV</span>
         </div>
         <div class="hidden md:flex space-x-8">
-          <a 
+          <router-link 
             v-for="item in menuItems" 
             :key="item.name"
-            :href="item.path"
+            :to="item.path"
             class="text-gray-700 hover:text-blue-600 transition-colors"
           >
             {{ item.name }}
-          </a>
+          </router-link>
         </div>
         <button class="md:hidden p-2">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
