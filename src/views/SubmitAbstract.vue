@@ -6,7 +6,7 @@
       <h2 class="text-2xl font-semibold mb-4">Abstract Submission Instructions</h2>
       
       <div class="mb-6 text-center">
-        <img src="/FileBtn.jpg" alt="Submit" class="mx-auto max-h-[350px] w-auto mb-5" style="margin-bottom: 20px;" />
+        <img src="/FileBtn.jpg" alt="Submit" class="mx-auto max-h-[350px] w-auto mb-5 aspect-[4/5]" style="margin-bottom: 20px;" />
         <a href="https://easychair.org/conferences/?conf=icmhs25morelia" 
            target="_blank" 
            class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded transition-colors">
