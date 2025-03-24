@@ -18,6 +18,11 @@ const routes = [
     path: '/call-for-abstract',
     name: 'CallForAbstract',
     component: CallForAbstract
+  },
+  {
+    path: '/important-dates',
+    name: 'ImportantDates',
+    component: () => import('../views/ImportantDatesView.vue')
   }
 ]
 
