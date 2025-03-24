@@ -23,6 +23,11 @@ const routes = [
     path: '/important-dates',
     name: 'ImportantDates',
     component: () => import('../views/ImportantDatesView.vue')
+  },
+  {
+    path: '/submit-abstract',
+    name: 'SubmitAbstract',
+    component: () => import('../views/SubmitAbstract.vue')
   }
 ]
 
