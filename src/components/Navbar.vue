@@ -57,9 +57,11 @@ const toggleMobileMenu = () => {
   <nav class="bg-white shadow-md">
     <div class="container mx-auto px-4">
       <div class="flex justify-between items-center h-16">
-        <div class="flex items-center">
-          <img src="/logo1.png" alt="Logo" class="h-8 w-auto max-h-full mr-2" />
-          <span class="text-xl font-semibold">XXV</span>
+        <div class="flex items-center rounded px-4 py-2">
+          <div class="text-orange-500 text-xl font-bold mr-3">XXV</div>
+          <div class="text-sm font-medium"">
+            International Congress of the <br> Mexican Hydrogen Society
+          </div>
         </div>
         
         <!-- Desktop Menu -->
