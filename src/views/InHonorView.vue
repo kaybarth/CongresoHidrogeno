@@ -19,6 +19,9 @@ const imageUrl = computed(() => import.meta.env.BASE_URL + 'in-honor.jpg');
                 :src="imageUrl"
                 alt="Dra. Rosa de Guadalupe González Huerta" 
                 class="rounded-lg shadow-md w-full h-auto"
+                width="700"
+                height="600"
+                style="aspect-ratio: 4/3; object-fit: cover;"
               />
             </div>
             
