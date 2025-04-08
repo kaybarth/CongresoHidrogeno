@@ -4,6 +4,7 @@ import Navbar from './components/Navbar.vue'
 
 <template>
   <div class="app-container">
+    <!-- Temporarily comment out the Navbar to check if it's causing the error -->
     <Navbar class="navbar-fixed" />
     <main class="main-content">
       <router-view />

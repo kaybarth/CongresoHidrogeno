@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 
 // Restructured menu with dropdowns
 const menuItems = [
@@ -36,30 +36,50 @@ const menuItems = [
 
 // For mobile menu
 const mobileMenuOpen = ref(false);
-const expandedItems = ref<Set<number>>(new Set());
+const expandedItem = ref<number | null>(null);
+const navbarRef = ref<HTMLElement | null>(null);
 
 // Toggle mobile dropdown
 const toggleMobileDropdown = (index: number) => {
-  if (expandedItems.value.has(index)) {
-    expandedItems.value.delete(index);
-  } else {
-    expandedItems.value.add(index);
-  }
+  expandedItem.value = expandedItem.value === index ? null : index;
 };
 
 // Toggle mobile menu
 const toggleMobileMenu = () => {
   mobileMenuOpen.value = !mobileMenuOpen.value;
 };
+
+// Close mobile menu
+const closeMobileMenu = () => {
+  mobileMenuOpen.value = false;
+  expandedItem.value = null;
+};
+
+// Handle clicks outside of navbar
+const handleOutsideClick = (event: MouseEvent) => {
+  if (mobileMenuOpen.value && navbarRef.value && !navbarRef.value.contains(event.target as Node)) {
+    closeMobileMenu();
+  }
+};
+
+// Add event listener when component is mounted
+onMounted(() => {
+  document.addEventListener('click', handleOutsideClick);
+});
+
+// Remove event listener when component is unmounted
+onUnmounted(() => {
+  document.removeEventListener('click', handleOutsideClick);
+});
 </script>
 
 <template>
-  <nav class="bg-white shadow-md">
+  <nav ref="navbarRef" class="bg-white shadow-md">
     <div class="container mx-auto px-4">
       <div class="flex justify-between items-center h-16">
         <div class="flex items-center rounded px-4 py-2">
           <div class="text-orange-500 text-xl font-bold mr-3">XXV</div>
-          <div class="text-sm font-medium"">
+          <div class="text-sm font-medium">
             International Congress of the <br> Mexican Hydrogen Society
           </div>
         </div>
@@ -114,6 +134,7 @@ const toggleMobileMenu = () => {
               v-if="!item.children" 
               :to="item.path" 
               class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md"
+              @click="closeMobileMenu"
             >
               {{ item.name }}
             </router-link>
@@ -125,14 +146,15 @@ const toggleMobileMenu = () => {
                 class="flex justify-between items-center w-full px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md"
               >
                 {{ item.name }}
-                <span>{{ expandedItems.has(index) ? '▲' : '▼' }}</span>
+                <span>{{ expandedItem === index ? '▲' : '▼' }}</span>
               </button>
-              <div v-if="expandedItems.has(index)" class="pl-4">
+              <div v-if="expandedItem === index" class="pl-4">
                 <router-link 
                   v-for="(child, childIndex) in item.children" 
                   :key="`mobile-child-${childIndex}`" 
                   :to="child.path"
                   class="block px-3 py-2 text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-gray-50 rounded-md"
+                  @click="closeMobileMenu"
                 >
                   {{ child.name }}
                 </router-link>
