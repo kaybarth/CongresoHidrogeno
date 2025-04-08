@@ -1,0 +1,29 @@
+/* Styles for active navigation links */
+.navbar-active,
+.navbar-exact-active {
+  color: #3498db !important; /* Light blue color */
+  background-color: rgba(52, 152, 219, 0.1) !important; /* Very subtle blue background */
+  border-bottom: 2px solid #3498db !important; /* Light blue underline */
+}
+
+/* Style for parent containers with active children */
+.dropdown-toggle.has-active-child,
+.nav-item:has(.navbar-active),
+.nav-item:has(.navbar-exact-active) {
+  color: #3498db !important;
+  background-color: rgba(52, 152, 219, 0.1) !important;
+  border-bottom: 2px solid #3498db !important;
+}
+
+/* For mobile navigation - may need adjustments based on your navbar structure */
+@media (max-width: 768px) {
+  .navbar-active,
+  .navbar-exact-active,
+  .dropdown-toggle.has-active-child,
+  .nav-item:has(.navbar-active),
+  .nav-item:has(.navbar-exact-active) {
+    background-color: rgba(52, 152, 219, 0.15) !important; /* Slightly stronger on mobile for visibility */
+    border-left: 3px solid #3498db !important; /* Side indicator instead of bottom for mobile */
+    border-bottom: none !important;
+  }
+}

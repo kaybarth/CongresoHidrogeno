@@ -48,12 +48,19 @@ const routes = [
     path: '/register',
     name: 'Register',
     component: UnderConstruction
+  },
+  {
+    path: '/plenary-speakers',
+    name: 'PlenarySpeakers',
+    component: UnderConstruction
   }
 ]
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes
+  routes,
+  linkActiveClass: 'navbar-active',
+  linkExactActiveClass: 'navbar-exact-active'
 })
 
 export default router

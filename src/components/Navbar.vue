@@ -1,5 +1,9 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref } from 'vue';
+import { useRoute } from 'vue-router';
+
+// Get current route for active state detection
+const route = useRoute();
 
 // Restructured menu with dropdowns
 const menuItems = [
@@ -36,12 +40,15 @@ const menuItems = [
 
 // For mobile menu
 const mobileMenuOpen = ref(false);
-const expandedItem = ref<number | null>(null);
-const navbarRef = ref<HTMLElement | null>(null);
+const expandedItems = ref<Set<number>>(new Set());
 
 // Toggle mobile dropdown
 const toggleMobileDropdown = (index: number) => {
-  expandedItem.value = expandedItem.value === index ? null : index;
+  if (expandedItems.value.has(index)) {
+    expandedItems.value.delete(index);
+  } else {
+    expandedItems.value.add(index);
+  }
 };
 
 // Toggle mobile menu
@@ -49,32 +56,15 @@ const toggleMobileMenu = () => {
   mobileMenuOpen.value = !mobileMenuOpen.value;
 };
 
-// Close mobile menu
-const closeMobileMenu = () => {
-  mobileMenuOpen.value = false;
-  expandedItem.value = null;
+// Check if dropdown has active child
+const hasActiveChild = (item: any): boolean => {
+  if (!item.children) return false;
+  return item.children.some((child: any) => child.path === route.path);
 };
-
-// Handle clicks outside of navbar
-const handleOutsideClick = (event: MouseEvent) => {
-  if (mobileMenuOpen.value && navbarRef.value && !navbarRef.value.contains(event.target as Node)) {
-    closeMobileMenu();
-  }
-};
-
-// Add event listener when component is mounted
-onMounted(() => {
-  document.addEventListener('click', handleOutsideClick);
-});
-
-// Remove event listener when component is unmounted
-onUnmounted(() => {
-  document.removeEventListener('click', handleOutsideClick);
-});
 </script>
 
 <template>
-  <nav ref="navbarRef" class="bg-white shadow-md">
+  <nav class="bg-white shadow-md">
     <div class="container mx-auto px-4">
       <div class="flex justify-between items-center h-16">
         <div class="flex items-center rounded px-4 py-2">
@@ -98,7 +88,10 @@ onUnmounted(() => {
             
             <!-- Dropdown items -->
             <div v-else class="relative group dropdown-container">
-              <button class="text-gray-700 hover:text-blue-600 transition-colors group-hover:text-blue-600 py-2 px-3">
+              <button 
+                class="text-gray-700 hover:text-blue-600 transition-colors group-hover:text-blue-600 py-2 px-3 dropdown-toggle"
+                :class="{ 'has-active-child': hasActiveChild(item) }"
+              >
                 {{ item.name }}
               </button>
               <!-- Updated dropdown menu positioning -->
@@ -134,7 +127,6 @@ onUnmounted(() => {
               v-if="!item.children" 
               :to="item.path" 
               class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md"
-              @click="closeMobileMenu"
             >
               {{ item.name }}
             </router-link>
@@ -143,18 +135,18 @@ onUnmounted(() => {
             <div v-else>
               <button 
                 @click="toggleMobileDropdown(index)" 
-                class="flex justify-between items-center w-full px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md"
+                class="flex justify-between items-center w-full px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md dropdown-toggle"
+                :class="{ 'has-active-child': hasActiveChild(item) }"
               >
                 {{ item.name }}
-                <span>{{ expandedItem === index ? '▲' : '▼' }}</span>
+                <span>{{ expandedItems.has(index) ? '▲' : '▼' }}</span>
               </button>
-              <div v-if="expandedItem === index" class="pl-4">
+              <div v-if="expandedItems.has(index)" class="pl-4">
                 <router-link 
                   v-for="(child, childIndex) in item.children" 
                   :key="`mobile-child-${childIndex}`" 
                   :to="child.path"
                   class="block px-3 py-2 text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-gray-50 rounded-md"
-                  @click="closeMobileMenu"
                 >
                   {{ child.name }}
                 </router-link>
@@ -168,6 +160,9 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
+/* Import navbar styles */
+@import "../assets/styles/navbar.css";
+
 /* Ensure dropdown displays on hover for desktop */
 .group:hover .group-hover\:block {
   display: block;
@@ -259,6 +254,21 @@ onUnmounted(() => {
       opacity: 1;
       transform: translateY(0);
     }
+  }
+}
+
+/* Additional styling for active buttons */
+.has-active-child {
+  color: #3498db !important;
+  background-color: rgba(52, 152, 219, 0.1) !important;
+  border-bottom: 2px solid #3498db !important;
+}
+
+@media (max-width: 768px) {
+  .has-active-child {
+    background-color: rgba(52, 152, 219, 0.15) !important;
+    border-left: 3px solid #3498db !important;
+    border-bottom: none !important;
   }
 }
 </style>
