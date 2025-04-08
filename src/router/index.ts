@@ -2,6 +2,11 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../pages/Home.vue'
 import RegistrationFees from '../pages/RegistrationFees.vue'
 import CallForAbstract from '../views/CallForAbstract.vue'
+import ImportantDatesView from '../views/ImportantDatesView.vue'
+import SubmitAbstract from '../views/SubmitAbstract.vue'
+import GrandCantalagua from '../views/GrandCantalagua.vue'
+import InHonorView from '../views/InHonorView.vue'
+import UnderConstruction from '../views/UnderConstruction.vue'
 
 const routes = [
   {
@@ -22,22 +27,27 @@ const routes = [
   {
     path: '/important-dates',
     name: 'ImportantDates',
-    component: () => import('../views/ImportantDatesView.vue')
+    component: ImportantDatesView
   },
   {
     path: '/submit-abstract',
     name: 'SubmitAbstract',
-    component: () => import('../views/SubmitAbstract.vue')
+    component: SubmitAbstract
   },
   {
     path: '/grand-cantalagua',
     name: 'grandCantalagua',
-    component: () => import('../views/GrandCantalagua.vue')
+    component: GrandCantalagua
   },
   {
     path: '/in-honor',
     name: 'InHonor',
-    component: () => import('../views/InHonorView.vue')
+    component: InHonorView
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: UnderConstruction
   }
 ]
 
