@@ -41,19 +41,55 @@ const menuItems = [
 // For mobile menu
 const mobileMenuOpen = ref(false);
 const expandedItems = ref<Set<number>>(new Set());
+const isAnimating = ref(false);
 
-// Toggle mobile dropdown
+// Toggle mobile dropdown - Modified to close current item first, then open the new one
 const toggleMobileDropdown = (index: number) => {
+  if (isAnimating.value) return; // Prevent multiple clicks during animation
+  
   if (expandedItems.value.has(index)) {
+    // If clicking on already open item, just close it
+    isAnimating.value = true;
     expandedItems.value.delete(index);
+    setTimeout(() => {
+      isAnimating.value = false;
+    }, 350); // Match this with animation duration
   } else {
-    expandedItems.value.add(index);
+    // If opening a new item while another is open
+    if (expandedItems.value.size > 0) {
+      isAnimating.value = true;
+      // Store the index to open after closing
+      const newIndex = index;
+      // Clear current items
+      expandedItems.value.clear();
+      
+      // Wait for close animation to finish before opening the new one
+      setTimeout(() => {
+        expandedItems.value.add(newIndex);
+        setTimeout(() => {
+          isAnimating.value = false;
+        }, 350);
+      }, 350); // Match this with animation duration
+    } else {
+      // If no items are open, just open the new one
+      expandedItems.value.add(index);
+    }
   }
 };
 
 // Toggle mobile menu
 const toggleMobileMenu = () => {
   mobileMenuOpen.value = !mobileMenuOpen.value;
+  // Clear expanded items when closing mobile menu
+  if (!mobileMenuOpen.value) {
+    expandedItems.value.clear();
+  }
+};
+
+// Close mobile menu (to be used when navigating to a new page)
+const closeMobileMenu = () => {
+  mobileMenuOpen.value = false;
+  expandedItems.value.clear();
 };
 
 // Check if dropdown has active child
@@ -111,50 +147,56 @@ const hasActiveChild = (item: any): boolean => {
         </div>
         
         <!-- Mobile menu button -->
-        <button @click="toggleMobileMenu" class="md:hidden p-2">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
+        <button @click="toggleMobileMenu" class="md:hidden p-2 hamburger-menu" :class="{ 'is-active': mobileMenuOpen }">
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
         </button>
       </div>
       
       <!-- Mobile Menu -->
-      <div v-if="mobileMenuOpen" class="md:hidden">
-        <div class="px-2 pt-2 pb-3 space-y-1">
-          <template v-for="(item, index) in menuItems" :key="`mobile-${index}`">
-            <!-- Single link items -->
-            <router-link 
-              v-if="!item.children" 
-              :to="item.path" 
-              class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md"
-            >
-              {{ item.name }}
-            </router-link>
-            
-            <!-- Dropdown items -->
-            <div v-else>
-              <button 
-                @click="toggleMobileDropdown(index)" 
-                class="flex justify-between items-center w-full px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md dropdown-toggle"
-                :class="{ 'has-active-child': hasActiveChild(item) }"
+      <transition name="slide-fade">
+        <div v-if="mobileMenuOpen" class="md:hidden mobile-menu">
+          <div class="px-2 pt-2 pb-3 space-y-1">
+            <template v-for="(item, index) in menuItems" :key="`mobile-${index}`">
+              <!-- Single link items -->
+              <router-link 
+                v-if="!item.children" 
+                :to="item.path" 
+                class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md"
+                @click="closeMobileMenu"
               >
                 {{ item.name }}
-                <span>{{ expandedItems.has(index) ? '▲' : '▼' }}</span>
-              </button>
-              <div v-if="expandedItems.has(index)" class="pl-4">
-                <router-link 
-                  v-for="(child, childIndex) in item.children" 
-                  :key="`mobile-child-${childIndex}`" 
-                  :to="child.path"
-                  class="block px-3 py-2 text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-gray-50 rounded-md"
+              </router-link>
+              
+              <!-- Dropdown items -->
+              <div v-else>
+                <button 
+                  @click="toggleMobileDropdown(index)" 
+                  class="flex justify-between items-center w-full px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md dropdown-toggle"
+                  :class="{ 'has-active-child': hasActiveChild(item) }"
                 >
-                  {{ child.name }}
-                </router-link>
+                  {{ item.name }}
+                  <span class="dropdown-arrow" :class="{ 'is-active': expandedItems.has(index) }">▼</span>
+                </button>
+                <transition name="expand">
+                  <div v-if="expandedItems.has(index)" class="pl-4 submenu-container">
+                    <router-link 
+                      v-for="(child, childIndex) in item.children" 
+                      :key="`mobile-child-${childIndex}`" 
+                      :to="child.path"
+                      class="block px-3 py-2 text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-gray-50 rounded-md mobile-submenu-item"
+                      @click="closeMobileMenu"
+                    >
+                      {{ child.name }}
+                    </router-link>
+                  </div>
+                </transition>
               </div>
-            </div>
-          </template>
+            </template>
+          </div>
         </div>
-      </div>
+      </transition>
     </div>
   </nav>
 </template>
@@ -270,5 +312,144 @@ const hasActiveChild = (item: any): boolean => {
     border-left: 3px solid #3498db !important;
     border-bottom: none !important;
   }
+}
+
+/* Transition styles for mobile menu */
+.slide-fade-enter-active {
+  transition: all 0.4s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+/* Improved transition styles for dropdown menu items */
+.expand-enter-active,
+.expand-leave-active {
+  transition: all 0.35s ease;
+  max-height: 300px;
+  overflow: hidden;
+}
+
+.expand-enter-from,
+.expand-leave-to {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+}
+
+.expand-enter-active {
+  animation: slideDownFade 0.35s ease forwards;
+}
+
+.expand-leave-active {
+  animation: slideUpFade 0.35s ease forwards;
+}
+
+@keyframes slideDownFade {
+  0% {
+    max-height: 0;
+    opacity: 0;
+  }
+  100% {
+    max-height: 300px;
+    opacity: 1;
+  }
+}
+
+@keyframes slideUpFade {
+  0% {
+    max-height: 300px;
+    opacity: 1;
+  }
+  100% {
+    max-height: 0;
+    opacity: 0;
+  }
+}
+
+/* Rotating dropdown arrow animation */
+.dropdown-arrow {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.dropdown-arrow.is-active {
+  transform: rotate(-180deg);
+}
+
+/* Mobile menu styling */
+.mobile-menu {
+  border-top: 1px solid rgba(209, 213, 219, 0.5);
+}
+
+/* Submenu container styling */
+.submenu-container {
+  overflow: hidden;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Improved staggered animation for submenu items */
+.mobile-submenu-item {
+  opacity: 0;
+  animation: fadeInItem 0.3s ease forwards;
+}
+
+@keyframes fadeInItem {
+  0% {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Staggered animation delay for submenu items */
+.mobile-submenu-item:nth-child(1) { animation-delay: 0.05s; }
+.mobile-submenu-item:nth-child(2) { animation-delay: 0.1s; }
+.mobile-submenu-item:nth-child(3) { animation-delay: 0.15s; }
+.mobile-submenu-item:nth-child(4) { animation-delay: 0.2s; }
+.mobile-submenu-item:nth-child(5) { animation-delay: 0.25s; }
+
+/* Hamburger menu button animation */
+.hamburger-menu {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30px;
+  height: 24px;
+  transition: all 0.3s ease;
+}
+
+.hamburger-line {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background-color: #4b5563;
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+
+/* Hamburger animation when active */
+.hamburger-menu.is-active .hamburger-line:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.hamburger-menu.is-active .hamburger-line:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger-menu.is-active .hamburger-line:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
 }
 </style>
