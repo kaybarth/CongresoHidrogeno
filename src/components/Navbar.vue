@@ -103,7 +103,7 @@ const hasActiveChild = (item: any): boolean => {
   <nav class="bg-white shadow-md">
     <div class="container mx-auto px-4">
       <div class="flex justify-between items-center h-16">
-        <div class="flex items-center rounded px-2 py-2 navbar-brand">
+        <div class="flex items-center rounded px-2 py-1 navbar-brand">
           <div class="text-orange-500 text-xl font-bold mr-2 flex-shrink-0">XXV</div>
           <div class="text-sm font-medium congress-title">
             International Congress of the Mexican Hydrogen Society
@@ -111,7 +111,7 @@ const hasActiveChild = (item: any): boolean => {
         </div>
         
         <!-- Desktop Menu -->
-        <div class="hidden md:flex space-x-10">
+        <div class="hidden md:flex space-x-6">
           <template v-for="(item, index) in menuItems" :key="`menu-${index}`">
             <!-- Single link items - Fixed alignment with py-2 class -->
             <router-link 
