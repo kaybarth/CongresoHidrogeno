@@ -103,10 +103,10 @@ const hasActiveChild = (item: any): boolean => {
   <nav class="bg-white shadow-md">
     <div class="container mx-auto px-4">
       <div class="flex justify-between items-center h-16">
-        <div class="flex items-center rounded px-4 py-2">
-          <div class="text-orange-500 text-xl font-bold mr-3">XXV</div>
-          <div class="text-sm font-medium">
-            International Congress of the <br> Mexican Hydrogen Society
+        <div class="flex items-center rounded px-2 py-2 navbar-brand">
+          <div class="text-orange-500 text-xl font-bold mr-2 flex-shrink-0">XXV</div>
+          <div class="text-sm font-medium congress-title">
+            International Congress of the Mexican Hydrogen Society
           </div>
         </div>
         
@@ -204,4 +204,45 @@ const hasActiveChild = (item: any): boolean => {
 <style scoped>
 /* Import navbar styles */
 @import "../assets/styles/navbar.css";
+
+/* Responsive congress title */
+.navbar-brand {
+  max-width: 280px;
+  flex-wrap: nowrap;
+}
+
+.congress-title {
+  line-height: 1.2;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  hyphens: auto;
+}
+
+/* Media queries for responsive text size */
+@media (max-width: 768px) {
+  .navbar-brand {
+    max-width: 220px;
+  }
+  .congress-title {
+    font-size: 0.75rem;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .navbar-brand {
+    max-width: 250px;
+  }
+  .congress-title {
+    font-size: 0.8rem;
+  }
+}
+
+@media (min-width: 1025px) {
+  .navbar-brand {
+    max-width: 300px;
+  }
+}
 </style>
