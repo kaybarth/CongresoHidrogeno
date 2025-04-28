@@ -204,45 +204,4 @@ const hasActiveChild = (item: any): boolean => {
 <style scoped>
 /* Import navbar styles */
 @import "../assets/styles/navbar.css";
-
-/* Responsive congress title */
-.navbar-brand {
-  max-width: 280px;
-  flex-wrap: nowrap;
-}
-
-.congress-title {
-  line-height: 1.2;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  hyphens: auto;
-}
-
-/* Media queries for responsive text size */
-@media (max-width: 768px) {
-  .navbar-brand {
-    max-width: 220px;
-  }
-  .congress-title {
-    font-size: 0.75rem;
-  }
-}
-
-@media (min-width: 769px) and (max-width: 1024px) {
-  .navbar-brand {
-    max-width: 250px;
-  }
-  .congress-title {
-    font-size: 0.8rem;
-  }
-}
-
-@media (min-width: 1025px) {
-  .navbar-brand {
-    max-width: 300px;
-  }
-}
 </style>
